@@ -28,7 +28,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
 app.use(requestLogger);
-app.use(logger);
 
 app.post('/signin', signinValidation, login);
 app.post('/signup', signupValidation, createUser);
