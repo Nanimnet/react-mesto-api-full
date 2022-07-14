@@ -1,0 +1,19 @@
+.profile__avatar-change {
+    background: transparent url(../../../images/edit-button.svg) no-repeat;
+    background-size: 46px 46px;
+    width: 46px;
+    height: 46px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    position: absolute;
+    left: 36px;
+    top: 33px;
+    z-index: 1;
+}
+
+@media screen and (max-width: 424px){
+    .profile__avatar-change{
+        background-size: 26px 26px;
+    }
+}

@@ -1,0 +1,8 @@
+.card__name {
+    display: flex;
+    flex-direction: row;
+    padding: 20px 25px;
+    box-sizing: content-box;
+    justify-content: space-between;
+    align-items: center;
+}

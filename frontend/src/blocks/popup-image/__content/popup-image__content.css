@@ -1,0 +1,6 @@
+.popup-image__content {
+    max-width: 75vw;
+    margin: auto;
+    box-sizing: border-box;
+    position: relative;
+}

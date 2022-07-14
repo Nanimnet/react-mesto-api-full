@@ -1,0 +1,21 @@
+.profile__avatar {
+    width: 120px;
+    height: 120px;
+    background-image: url(../../../images/avatar.png) center no-repeat;
+    cursor: pointer;
+    z-index: 2;
+    transition: all .3s ease-in-out;
+    border-radius: 100px;
+    object-fit: cover;
+    position: relative;
+}
+
+.profile__avatar:hover {
+    opacity: 0.2;
+}
+
+@media only screen and (max-width: 800px) {
+    .profile__avatar {
+        margin-right: 0;
+    }
+}

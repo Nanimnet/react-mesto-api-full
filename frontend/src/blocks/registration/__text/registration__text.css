@@ -1,0 +1,13 @@
+.registration__text {
+    font-size: 14px;
+    color: white;
+    position: absolute;
+    bottom: 80px;
+    margin: 0;
+}
+
+@media only screen and (max-width: 470px) {
+    .registration__text {
+        bottom: 40px;
+    }
+}
