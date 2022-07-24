@@ -5,7 +5,6 @@ const { errors } = require('celebrate');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const userRouter = require('./routes/users');
@@ -14,17 +13,14 @@ const { login, createUser } = require('./controllers/users');
 const { signupValidation, signinValidation } = require('./middlewares/validation');
 const auth = require('./middlewares/auth');
 const errorsHandler = require('./middlewares/errors');
+const { cors } = require('./middlewares/cors');
 
 const NotFoundErr = require('./errors/NotFoundErr');
 
 const app = express();
 const { PORT = 3000 } = process.env;
-app.use(cors({
-  origin: ['https://onemoreproject.nomoredomains.rocks', 'http://onemoreproject.nomoredomains.rocks'],
-  allowedHeaders: ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Origin', 'Content-Type'],
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  credentials: true,
-}));
+
+app.use(cors);
 
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
