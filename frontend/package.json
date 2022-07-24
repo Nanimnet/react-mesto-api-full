@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && scp -r ./build/* nana@51.250.30.236:/nana-mesto/react-mesto-api-full/frontend"
+    "deploy": "npm run build && rsync -r -v --delete ./build/* nana@51.250.30.236:/home/nana/react-mesto-api-full/frontend"
   },
   "eslintConfig": {
     "extends": [

@@ -13,11 +13,14 @@ const { login, createUser } = require('./controllers/users');
 const { signupValidation, signinValidation } = require('./middlewares/validation');
 const auth = require('./middlewares/auth');
 const errorsHandler = require('./middlewares/errors');
+const { cors } = require('./middlewares/cors');
 
 const NotFoundErr = require('./errors/NotFoundErr');
 
 const app = express();
 const { PORT = 3000 } = process.env;
+
+app.use(cors);
 
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
