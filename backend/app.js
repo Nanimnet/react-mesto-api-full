@@ -1,10 +1,11 @@
-require('dotenv').config(); 
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const userRouter = require('./routes/users');
@@ -17,7 +18,13 @@ const errorsHandler = require('./middlewares/errors');
 const NotFoundErr = require('./errors/NotFoundErr');
 
 const app = express();
-const { PORT = 3000 } = process.env; 
+const { PORT = 3000 } = process.env;
+app.use(cors({
+  origin: ['https://onemoreproject.nomoredomains.rocks', 'http://onemoreproject.nomoredomains.rocks'],
+  allowedHeaders: ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Origin', 'Content-Type'],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  credentials: true,
+}));
 
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
@@ -34,7 +41,7 @@ app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
-}); 
+});
 
 app.post('/signin', signinValidation, login);
 app.post('/signup', signupValidation, createUser);
@@ -44,11 +51,11 @@ app.use(auth);
 app.use(userRouter);
 app.use(cardRouter);
 
-app.use(errorLogger);
-
 app.use((req, res, next) => {
   next(new NotFoundErr('Запрашиваемая страница не найдена'));
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 
