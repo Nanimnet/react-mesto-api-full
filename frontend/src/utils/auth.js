@@ -1,5 +1,5 @@
 import { apiUserData } from "./utils.js"; 
-const BASE_URL = 'https://auth.nomoreparties.co';
+const BASE_URL = 'https://api.nana-mesto.nomoredomains.xyz';
 
 function checkResponse(res) {
      if (res.ok) {
