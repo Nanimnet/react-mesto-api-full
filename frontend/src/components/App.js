@@ -15,7 +15,7 @@ import Login from "./Login"
 import ProtectedRoute from "./ProtectedRoute"
 import { api } from "../utils/api";
 import { CurrentUserContext } from "./../contexts/CurrentUserContext.js";
-import * as auth from"../utils/auth"
+import * as auth from"../utils/auth";
 
 function App() {
   const history = useHistory();

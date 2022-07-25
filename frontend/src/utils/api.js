@@ -1,4 +1,4 @@
-import { apiUserData } from "./utils.js";
+// import { apiUserData } from "./utils.js";
 
 class Api {
   constructor({ baseUrl, headers }) {
@@ -10,7 +10,8 @@ class Api {
     const fetchInit = {
       method: method,
       headers: {
-        authorization: this._headers.authorization,
+        // authorization: this._headers.authorization,
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
         "Content-Type": "application/json",
       },
     };
@@ -24,6 +25,15 @@ class Api {
   getInitialCards = () => this._request("cards", "GET");
 
   getUserInfo = () => this._request("users/me", "GET");
+
+  // getUserUnfo(token) { // Тут принимает твой токен
+  //   return fetch(`${this._baseUrl}/users/me`, { 
+  //     headers: { 
+  //       'Authorization': `Bearer ${token}`, // Сюда его прописываем
+  //       "Content-Type": "application/json", 
+  //     }, 
+  //   }).then(res => this._parseResponse(res)); 
+  // } 
 
   editUserInfo = ({ newName = "", newAbout = "" }) =>
     this._request(
@@ -62,9 +72,9 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: `${apiUserData.ariBaseUrl}/${apiUserData.userGroupNumber}`,
-  headers: {
-    authorization: apiUserData.userAuthorizationToken,
-    "Content-Type": apiUserData.apiContentType,
-  },
+  baseUrl: `https://api.nana-mesto.nomoredomains.xyz`,
+  // headers: {
+  //   authorization: apiUserData.userAuthorizationToken,
+  //   "Content-Type": apiUserData.apiContentType,
+  // },
 });
