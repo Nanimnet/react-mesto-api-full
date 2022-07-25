@@ -54,6 +54,7 @@ function App() {
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([user, cardsData]) => {
+        debugger;
         setCurrentUser({
           name: user.name,
           about: user.about,
@@ -64,7 +65,9 @@ function App() {
         setCards(cardsData);
         handleTokenCheck();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => { 
+        debugger;
+        console.log(err) });
   }, []);
 
   function handleAddPlaceClick() {

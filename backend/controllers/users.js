@@ -139,6 +139,8 @@ module.exports.updateAvatar = (req, res, next) => {
 
 // получение текущего пользователя
 module.exports.getCurrentUser = (req, res, next) => {
+  // eslint-disable-next-line no-debugger
+  debugger;
   User.findById(req.user._id)
     .then((data) => {
       if (!data) {

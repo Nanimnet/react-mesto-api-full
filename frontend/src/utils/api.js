@@ -1,3 +1,5 @@
+import { apiUserData } from "./utils.js";
+
 class Api {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
@@ -60,5 +62,9 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: 'https://api.nana-mesto.nomoredomains.xyz',
+  baseUrl: `${apiUserData.ariBaseUrl}/${apiUserData.userGroupNumber}`,
+  headers: {
+    authorization: apiUserData.userAuthorizationToken,
+    "Content-Type": apiUserData.apiContentType,
+  },
 });
