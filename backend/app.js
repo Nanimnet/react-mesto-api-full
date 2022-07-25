@@ -42,10 +42,10 @@ app.get('/crash-test', () => {
 app.post('/signin', signinValidation, login);
 app.post('/signup', signupValidation, createUser);
 
-app.use(auth);
-
 app.use(userRouter);
 app.use(cardRouter);
+
+app.use(auth);
 
 app.use((req, res, next) => {
   next(new NotFoundErr('Запрашиваемая страница не найдена'));

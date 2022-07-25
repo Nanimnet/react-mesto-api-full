@@ -139,7 +139,6 @@ module.exports.updateAvatar = (req, res, next) => {
 
 // получение текущего пользователя
 module.exports.getCurrentUser = (req, res, next) => {
-  console.log(req);
   User.findById(req.user._id)
     .then((data) => {
       if (!data) {
@@ -148,7 +147,6 @@ module.exports.getCurrentUser = (req, res, next) => {
       res.status(200).send(data);
     })
     .catch((err) => {
-      console.log(err);
       if (err.name === 'CastError') {
         next(new BadRequestErr('Переданы некорректные данные'));
       } else {
