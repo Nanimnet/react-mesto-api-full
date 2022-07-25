@@ -4,7 +4,6 @@ class Api {
   }
 
   _checkResponse(res) {
-  //проверка ответа
       if (res.ok) {
           return res.json();
       }
@@ -14,7 +13,6 @@ class Api {
   }
 
   getUserInfo() {
-  //получение информации о пользователе
       return fetch(`${this._url}/users/me`, {
           headers: {
             authorization: localStorage.getItem('jwt')
@@ -24,7 +22,6 @@ class Api {
   }
 
   editUserInfo(userData) {
-  //обновление информации о пользователе
       return fetch(`${this._url}/users/me`, {
           method: 'PATCH',
           headers: {
@@ -37,7 +34,6 @@ class Api {
   }
 
   changeAvatar(userPhoto) {
-  //обновление аватара пользователя
       return fetch(`${this._url}/users/me/avatar`, {
           method: 'PATCH',
           headers: {
@@ -50,7 +46,6 @@ class Api {
   }
 
   getInitialCards() {
-  //получение стартового набора карточек с сервера
       return fetch(`${this._url}/cards`, {
           headers: {
             authorization: localStorage.getItem('jwt')
@@ -60,7 +55,6 @@ class Api {
   }
 
   addNewCard(card) {
-  //пост новой карточки на сервер
       return fetch(`${this._url}/cards`, {
           method: 'POST',
           headers: {
@@ -73,7 +67,6 @@ class Api {
   }
 
   deleteCard(cardId) {
-  //удаление карточки по ее id
       return fetch(`${this._url}/cards/${cardId}`, {
           method: 'DELETE',
           headers: {
@@ -83,31 +76,28 @@ class Api {
           .then(this._checkResponse)
   }
 
-  addLike(cardId) {
-  //добавление лайка карточке
-      return fetch(`${this._url}/cards/${cardId}/likes`, {
-          method: 'PUT',
-          headers: {
-              authorization: localStorage.getItem('jwt')
-          }
-      })
-          .then(this._checkResponse)
-  }
-
-  deleteLike(cardId) {
-  //удаление лайка с карточки
-      return fetch(`${this._url}/cards/${cardId}/likes`, {
-          method: 'DELETE',
-          headers: {
-              authorization: localStorage.getItem('jwt')
-          }
-      })
-          .then(this._checkResponse)       
-  }
+toggleLike(id, isSetLike) {
+  return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+    method: isSetLike ? 'DELETE' : 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: localStorage.getItem('jwt'),
+    },
+    credentials: 'include',
+  }).then(this._checkResponse);
 }
 
-
-
+  // deleteLike(cardId) {
+  // //удаление лайка с карточки
+  //     return fetch(`${this._url}/cards/${cardId}/likes`, {
+  //         method: 'DELETE',
+  //         headers: {
+  //             authorization: localStorage.getItem('jwt')
+  //         }
+  //     })
+  //         .then(this._checkResponse)       
+  // }
+}
 
 export const api = new Api({url: 'https://api.nana-mesto.nomoredomains.xyz'});
 

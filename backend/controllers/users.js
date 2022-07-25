@@ -138,28 +138,19 @@ module.exports.updateAvatar = (req, res, next) => {
 };
 
 // получение текущего пользователя
-// module.exports.getCurrentUser = (req, res, next) => {
-//   User.findById(req.user._id)
-//     .then((data) => {
-//       if (!data) {
-//         throw new NotFoundErr('Пользователь не найден');
-//       }
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       if (err.name === 'CastError') {
-//         next(new BadRequestErr('Переданы некорректные данные'));
-//       } else {
-//         next(err);
-//       }
-//     });
-// };
-
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail(() => next(new NotFoundErr('Пользователь не найден')))
-    .then((user) => res.send({
-      name: user.name, about: user.about, avatar: user.avatar, email: user.email, _id: user._id,
-    }))
-    .catch(next);
+    .then((data) => {
+      if (!data) {
+        throw new NotFoundErr('Пользователь не найден');
+      }
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestErr('Переданы некорректные данные'));
+      } else {
+        next(err);
+      }
+    });
 };
