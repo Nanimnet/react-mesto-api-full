@@ -62,9 +62,9 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: `${apiUserData.ariBaseUrl}/${apiUserData.userGroupNumber}`,
-  headers: {
-    authorization: apiUserData.userAuthorizationToken,
-    "Content-Type": apiUserData.apiContentType,
-  },
+  baseUrl: 'https://api.nana-mesto.nomoredomains.xyz',
+  // headers: {
+  //   authorization: apiUserData.userAuthorizationToken,
+  //   "Content-Type": apiUserData.apiContentType,
+  // },
 });
