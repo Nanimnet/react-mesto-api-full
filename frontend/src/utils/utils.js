@@ -4,4 +4,3 @@
 //     ariBaseUrl: "https://api.nana-mesto.nomoredomains.xyz",
 //     apiContentType: "application/json",
 //   };
-  
