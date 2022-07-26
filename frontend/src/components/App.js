@@ -17,6 +17,8 @@ import { api } from "../utils/api";
 import { CurrentUserContext } from "./../contexts/CurrentUserContext.js";
 import * as auth from"../utils/auth"
 
+const token = localStorage.getItem('jwt'); 
+
 function App() {
   const history = useHistory();
   const [email, setEmail] = useState(false);
@@ -52,7 +54,7 @@ function App() {
   }, [history, isLoggedIn]);
 
   React.useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
+    Promise.all([api.getUserInfo(token), api.getInitialCards()])
       .then(([user, cardsData]) => {
         setCurrentUser({
           name: user.name,

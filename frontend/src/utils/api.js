@@ -12,13 +12,14 @@ class Api {
       }
   }
 
-  getUserInfo() {
+  getUserInfo(token) {
       return fetch(`${this._url}/users/me`, {
           headers: {
-            authorization: localStorage.getItem('jwt')
+            'Authorization': `Bearer ${token}`,
+            "Content-Type": "application/json"
           }
         })
-          .then(this._checkResponse)
+          .then(res => this._checkResponse(res));
   }
 
   editUserInfo(userData) {
