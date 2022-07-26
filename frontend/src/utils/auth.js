@@ -34,6 +34,7 @@ export const login = (email, password) => {
         headers: {
             'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
             "email": email,
             "password": password,
@@ -56,7 +57,8 @@ export const checkToken = (jwt) => {
         headers:{
             "Content-Type":"application/json",
             "Authorization" : `Bearer ${jwt}`
-        }
+        },
+        credentials: 'include',
     })
 
     .then(checkResponse)
