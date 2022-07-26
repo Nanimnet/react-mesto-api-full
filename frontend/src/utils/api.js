@@ -22,71 +22,78 @@ class Api {
           .then(res => this._checkResponse(res));
   }
 
-  editUserInfo(userData) {
+  editUserInfo(token, { newName = "", newAbout = "" }) {
       return fetch(`${this._url}/users/me`, {
           method: 'PATCH',
           headers: {
-              authorization: localStorage.getItem('jwt'),
+            'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({name: userData.name, about: userData.about})
+          body: JSON.stringify({
+            name: newName,
+            about: newAbout,
+          })
       })
           .then(this._checkResponse)
   }
 
-  changeAvatar(userPhoto) {
+  changeAvatar(token, { newAvatarLink }) {
       return fetch(`${this._url}/users/me/avatar`, {
           method: 'PATCH',
           headers: {
-              authorization: localStorage.getItem('jwt'),
+              // authorization: localStorage.getItem('jwt'),
+              'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({avatar: userPhoto.avatar})
+          body: JSON.stringify({ avatar: newAvatarLink })
       })
           .then(this._checkResponse)
   }
 
-  getInitialCards() {
+  getInitialCards(token) {
       return fetch(`${this._url}/cards`, {
           headers: {
-            authorization: localStorage.getItem('jwt')
+            'Authorization': `Bearer ${token}`,
           }
         })
           .then(this._checkResponse)
   }
 
-  addNewCard(card) {
+  addNewCard(token, { cardName, cardLink }) {
       return fetch(`${this._url}/cards`, {
           method: 'POST',
           headers: {
-              authorization: localStorage.getItem('jwt'),
+            'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({name: card.name, link: card.link})
+          body: JSON.stringify({
+            name: cardName,
+            link: cardLink,
+          })
       })
           .then(this._checkResponse)
   }
 
-  deleteCard(cardId) {
+  deleteCard(token, { cardId }) {
       return fetch(`${this._url}/cards/${cardId}`, {
           method: 'DELETE',
           headers: {
-              authorization: localStorage.getItem('jwt')
+            'Authorization': `Bearer ${token}`,
           }
       })
           .then(this._checkResponse)
   }
 
-toggleLike(id, isSetLike) {
-  return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+toggleLike(token, { cardId, isSetLike }) {
+  return fetch(`${this._baseUrl}/${cardId}/likes`, {
     method: isSetLike ? 'DELETE' : 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      authorization: localStorage.getItem('jwt'),
+      'Authorization': `Bearer ${token}`,
     },
     credentials: 'include',
   }).then(this._checkResponse);
 }
 }
 
-export const api = new Api({url: 'https://api.nana-mesto.nomoredomains.xyz'});
+export const api = new Api({url: 'http://localhost:3001'});

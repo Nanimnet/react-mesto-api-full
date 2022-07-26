@@ -17,8 +17,6 @@ import { api } from "../utils/api";
 import { CurrentUserContext } from "./../contexts/CurrentUserContext.js";
 import * as auth from"../utils/auth"
 
-const token = localStorage.getItem('jwt'); 
-
 function App() {
   const history = useHistory();
   const [email, setEmail] = useState(false);
@@ -47,14 +45,34 @@ function App() {
     }
   }, []);
   
-  React.useEffect(() => {
-    if (isLoggedIn) {
-      history.push("/");
-    }
-  }, [history, isLoggedIn]);
+  // React.useEffect(() => {
+  //   if (isLoggedIn) {
+  //     history.push("/");
+  //   }
+  // }, [history, isLoggedIn]);
+
+  // React.useEffect(() => {
+  //   const jwt = localStorage.getItem('jwt'); // Берем токен из хранилища. Он самый актуальный
+  //   Promise.all([api.getUserInfo(jwt), api.getInitialCards(jwt)]) // Передаем в каждый метод
+  //     .then(([user, cardsData]) => {
+  //       setCurrentUser({
+  //         name: user.name,
+  //         about: user.about,
+  //         avatar: user.avatar,
+  //         currentUserId: user._id,
+  //       });
+  //       console.log(cardsData);
+  //       setCards(cardsData.cards);
+  //       handleTokenCheck();
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
+
 
   React.useEffect(() => {
-    Promise.all([api.getUserInfo(token), api.getInitialCards()])
+    const jwt = localStorage.getItem('jwt');
+    if (isLoggedIn){
+      Promise.all([api.getUserInfo(jwt), api.getInitialCards(jwt)])
       .then(([user, cardsData]) => {
         setCurrentUser({
           name: user.name,
@@ -64,10 +82,36 @@ function App() {
         });
 
         setCards(cardsData);
-        handleTokenCheck();
       })
       .catch((err) => console.log(err));
+    }    
+  }, [isLoggedIn]);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");    
+
+    if (token) {
+      auth
+        .checkToken(token)
+        .then((res) => {
+          email(res.data.email);
+
+          setLoggedIn(true);
+          history.push("/");
+        })
+        .catch((errorStatus) => {
+          // handleTooltipPopup(true, "Недействительный токен JWT", true);
+
+          localStorage.removeItem("token");
+          setLoggedIn(false);
+
+          history.push("/signin");
+        });
+    }
   }, []);
+
+
+
 
   function handleAddPlaceClick() {
     setAddPlacePopupOpen(true);

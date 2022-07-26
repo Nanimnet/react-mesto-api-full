@@ -34,11 +34,11 @@ export const login = (email, password) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        credentials: 'include',
         body: JSON.stringify({
-            "email": email,
-            "password": password,
-        })
+            email: email,
+            password: password,
+        }),
+        credentials: 'include'
     })
 
     .then(checkResponse)
