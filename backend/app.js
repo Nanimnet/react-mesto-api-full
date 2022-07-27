@@ -12,7 +12,7 @@ const cardRouter = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
 const { signupValidation, signinValidation } = require('./middlewares/validation');
 const auth = require('./middlewares/auth');
-// const errorsHandler = require('./middlewares/errors');
+const errorsHandler = require('./middlewares/errors');
 const { cors } = require('./middlewares/cors');
 
 const NotFoundErr = require('./errors/NotFoundErr');
@@ -55,7 +55,7 @@ app.use(errorLogger);
 
 app.use(errors());
 
-// app.use(errorsHandler);
+app.use(errorsHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

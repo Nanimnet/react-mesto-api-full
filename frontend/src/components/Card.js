@@ -24,7 +24,7 @@ function Card(props) {
 
     const isOwn = (props.item.owner === currentUserId) || (props.item.owner?._id === currentUserId);
     const isLiked = Array.from(props.item.likes || []).some(
-        (liker) => liker._id === currentUserId
+        (liker) => (liker?._id === currentUserId) || (liker === currentUserId)
     );
 
     const cardLikeButtonClassName = `card__like ${

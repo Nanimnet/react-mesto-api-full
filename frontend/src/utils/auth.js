@@ -1,4 +1,3 @@
-// const BASE_URL = 'https://api.nana-mesto.nomoredomains.xyz';
 import { api } from './api';
 
 const BASE_URL = api._url;
