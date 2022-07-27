@@ -18,7 +18,7 @@ const { cors } = require('./middlewares/cors');
 const NotFoundErr = require('./errors/NotFoundErr');
 
 const app = express();
-const { PORT = 3003 } = process.env;
+const { PORT = 3001 } = process.env;
 
 app.use(cors);
 

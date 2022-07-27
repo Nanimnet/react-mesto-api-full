@@ -89,5 +89,4 @@ class Api {
     }
 }
 
-// export const api = new Api({ url: 'https://api.nana-mesto.nomoredomains.xyz' });
-export const api = new Api({ url: 'http://localhost:3003' });
+export const api = new Api({ url: 'http://localhost:3001' });
