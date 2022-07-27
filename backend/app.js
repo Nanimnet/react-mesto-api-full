@@ -18,7 +18,7 @@ const { cors } = require('./middlewares/cors');
 const NotFoundErr = require('./errors/NotFoundErr');
 
 const app = express();
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 
 app.use(cors);
 
@@ -42,10 +42,10 @@ app.get('/crash-test', () => {
 app.post('/signin', signinValidation, login);
 app.post('/signup', signupValidation, createUser);
 
+app.use(auth);
+
 app.use(userRouter);
 app.use(cardRouter);
-
-app.use(auth);
 
 app.use((req, res, next) => {
   next(new NotFoundErr('Запрашиваемая страница не найдена'));

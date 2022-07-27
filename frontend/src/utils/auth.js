@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.nana-mesto.nomoredomains.xyz';
+const BASE_URL = 'http://localhost:3001';
 
 function checkResponse(res) {
      if (res.ok) {

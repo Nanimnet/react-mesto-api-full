@@ -103,7 +103,7 @@ module.exports.updateUserInfo = (req, res, next) => {
       if (!user) {
         throw new NotFoundErr('Пользователь не найден');
       }
-      res.status(200).send({ user });
+      res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
@@ -126,7 +126,7 @@ module.exports.updateAvatar = (req, res, next) => {
       if (!user) {
         throw new NotFoundErr('Пользователь не найден');
       }
-      res.status(200).send({ user });
+      res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
@@ -144,7 +144,7 @@ module.exports.getCurrentUser = (req, res, next) => {
       if (!data) {
         throw new NotFoundErr('Пользователь не найден');
       }
-      res.status(200).send(data);
+      res.status(200).send({data});
     })
     .catch((err) => {
       if (err.name === 'CastError') {

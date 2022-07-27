@@ -17,8 +17,6 @@ import { api } from "../utils/api";
 import { CurrentUserContext } from "./../contexts/CurrentUserContext.js";
 import * as auth from"../utils/auth"
 
-const token = localStorage.getItem('jwt'); 
-
 function App() {
   const history = useHistory();
   const [email, setEmail] = useState(false);
@@ -54,20 +52,31 @@ function App() {
   }, [history, isLoggedIn]);
 
   React.useEffect(() => {
-    Promise.all([api.getUserInfo(token), api.getInitialCards()])
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      setLoggedIn(true);
+    }
+  }, [isLoggedIn]);
+
+  React.useEffect(() => {
+
+    if(isLoggedIn) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([user, cardsData]) => {
         setCurrentUser({
-          name: user.name,
-          about: user.about,
-          avatar: user.avatar,
-          currentUserId: user._id,
+          name: user.data.name,
+          about: user.data.about,
+          avatar: user.data.avatar,
+          currentUserId: user.data._id,
         });
 
         setCards(cardsData);
         handleTokenCheck();
       })
       .catch((err) => console.log(err));
-  }, []);
+    }
+    
+  }, [isLoggedIn]);
 
   function handleAddPlaceClick() {
     setAddPlacePopupOpen(true);
@@ -87,11 +96,12 @@ function App() {
 
   //лайк карточек
   function handleLikeCard(card) {
-    const isLiked = card.likes.some(
-      (liker) => liker._id === currentUser.currentUserId
+
+    const isLiked = Array.from(card.likes || []).some(
+      (liker) => liker === currentUser.currentUserId
     );
     api
-      .toggleLike({ cardId: card._id, isSetLike: !isLiked })
+      .toggleLike({ cardId: card._id, isLiked: isLiked })
       .then((newCard) => {
         setCards((state) =>
           state.map((c) => (c._id === card._id ? newCard : c))
@@ -116,7 +126,7 @@ function App() {
   //добавление места
   function handleAddPlaceSubmit({ description, url }) {
     api
-      .addNewCard({ cardName: description, cardLink: url })
+      .addNewCard({ name: description, link: url })
       .then((newCard) => {
         setCards([newCard, ...cards]);
 

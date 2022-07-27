@@ -22,8 +22,8 @@ function Card(props) {
 
     const currentUserId = currentUserContext.currentUserId;
 
-    const isOwn = props.item.owner._id === currentUserId;
-    const isLiked = props.item.likes.some(
+    const isOwn = (props.item.owner === currentUserId) || (props.item.owner?._id === currentUserId);
+    const isLiked = Array.from(props.item.likes || []).some(
         (liker) => liker._id === currentUserId
     );
 
@@ -47,7 +47,7 @@ function Card(props) {
                 </h2>
                 <div className="card__like-section">
                     <button onClick={handleLikeClick} className={cardLikeButtonClassName} type="button"></button>
-                    <p className="card__like-count">{props.item.likes.length}</p>
+                    <p className="card__like-count">{Array.from(props.item.likes || []).length}</p>
                     {/* <p className="card__like-count">0</p> */}
                 </div>
             </div>
