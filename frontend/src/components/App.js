@@ -45,73 +45,38 @@ function App() {
     }
   }, []);
   
-  // React.useEffect(() => {
-  //   if (isLoggedIn) {
-  //     history.push("/");
-  //   }
-  // }, [history, isLoggedIn]);
-
-  // React.useEffect(() => {
-  //   const jwt = localStorage.getItem('jwt'); // Берем токен из хранилища. Он самый актуальный
-  //   Promise.all([api.getUserInfo(jwt), api.getInitialCards(jwt)]) // Передаем в каждый метод
-  //     .then(([user, cardsData]) => {
-  //       setCurrentUser({
-  //         name: user.name,
-  //         about: user.about,
-  //         avatar: user.avatar,
-  //         currentUserId: user._id,
-  //       });
-  //       console.log(cardsData);
-  //       setCards(cardsData.cards);
-  //       handleTokenCheck();
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
-
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      history.push("/");
+    }
+  }, [history, isLoggedIn]);
 
   React.useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (isLoggedIn){
-      Promise.all([api.getUserInfo(jwt), api.getInitialCards(jwt)])
-      .then(([user, cardsData]) => {
-        setCurrentUser({
-          name: user.name,
-          about: user.about,
-          avatar: user.avatar,
-          currentUserId: user._id,
-        });
-
-        setCards(cardsData);
-      })
-      .catch((err) => console.log(err));
-    }    
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      setLoggedIn(true);
+    }
   }, [isLoggedIn]);
 
   React.useEffect(() => {
-    const token = localStorage.getItem("token");    
 
-    if (token) {
-      auth
-        .checkToken(token)
-        .then((res) => {
-          email(res.data.email);
-
-          setLoggedIn(true);
-          history.push("/");
-        })
-        .catch((errorStatus) => {
-          // handleTooltipPopup(true, "Недействительный токен JWT", true);
-
-          localStorage.removeItem("token");
-          setLoggedIn(false);
-
-          history.push("/signin");
+    if(isLoggedIn) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([user, cardsData]) => {
+        setCurrentUser({
+          name: user.data.name,
+          about: user.data.about,
+          avatar: user.data.avatar,
+          currentUserId: user.data._id,
         });
+
+        setCards(cardsData);
+        handleTokenCheck();
+      })
+      .catch((err) => console.log(err));
     }
-  }, []);
-
-
-
+    
+  }, [isLoggedIn]);
 
   function handleAddPlaceClick() {
     setAddPlacePopupOpen(true);
@@ -131,11 +96,12 @@ function App() {
 
   //лайк карточек
   function handleLikeCard(card) {
-    const isLiked = card.likes.some(
-      (liker) => liker._id === currentUser.currentUserId
+
+    const isLiked = Array.from(card.likes || []).some(
+      (liker) => liker === currentUser.currentUserId
     );
     api
-      .toggleLike({ cardId: card._id, isSetLike: !isLiked })
+      .toggleLike({ cardId: card._id, isLiked: isLiked })
       .then((newCard) => {
         setCards((state) =>
           state.map((c) => (c._id === card._id ? newCard : c))
@@ -160,7 +126,7 @@ function App() {
   //добавление места
   function handleAddPlaceSubmit({ description, url }) {
     api
-      .addNewCard({ cardName: description, cardLink: url })
+      .addNewCard({ name: description, link: url })
       .then((newCard) => {
         setCards([newCard, ...cards]);
 

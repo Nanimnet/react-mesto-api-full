@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.nana-mesto.nomoredomains.xyz';
+const BASE_URL = 'http://localhost:3001';
 
 function checkResponse(res) {
      if (res.ok) {
@@ -34,11 +34,11 @@ export const login = (email, password) => {
         headers: {
             'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
-            email: email,
-            password: password,
-        }),
-        credentials: 'include'
+            "email": email,
+            "password": password,
+        })
     })
 
     .then(checkResponse)
